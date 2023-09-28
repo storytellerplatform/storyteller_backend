@@ -1,8 +1,16 @@
 package com.example.storyteller.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "Attribute")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "attribute")
 public class Attribute {
     @Id
