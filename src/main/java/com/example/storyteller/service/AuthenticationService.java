@@ -1,5 +1,8 @@
 package com.example.storyteller.service;
 
+import com.example.storyteller.dto.AuthenticationRequest;
+import com.example.storyteller.dto.AuthenticationResponse;
+import com.example.storyteller.dto.RegisterRequest;
 import com.example.storyteller.entity.*;
 import com.example.storyteller.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

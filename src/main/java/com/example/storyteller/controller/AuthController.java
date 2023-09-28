@@ -1,8 +1,8 @@
 package com.example.storyteller.controller;
 
-import com.example.storyteller.entity.AuthenticationRequest;
-import com.example.storyteller.entity.AuthenticationResponse;
-import com.example.storyteller.entity.RegisterRequest;
+import com.example.storyteller.dto.AuthenticationRequest;
+import com.example.storyteller.dto.AuthenticationResponse;
+import com.example.storyteller.dto.RegisterRequest;
 import com.example.storyteller.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,6 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-        System.out.println(request);
         return ResponseEntity.ok(authenticationService.register(request));
     }
 

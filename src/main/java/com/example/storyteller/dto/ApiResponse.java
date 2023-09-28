@@ -1,4 +1,4 @@
-package com.example.storyteller.entity;
+package com.example.storyteller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationRequest {
-
-    private String email;
-    private String password;
+public class ApiResponse<T> {
+    private T data;
 }

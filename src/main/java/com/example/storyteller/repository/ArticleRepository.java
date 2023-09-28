@@ -1,4 +1,7 @@
 package com.example.storyteller.repository;
 
-public interface ArticleRepository {
+import com.example.storyteller.entity.Article;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ArticleRepository extends JpaRepository<Article, Long> {
 }
