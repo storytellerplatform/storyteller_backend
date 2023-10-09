@@ -1,5 +1,6 @@
 package com.example.storyteller.service;
 
+import com.example.storyteller.dto.ApiResponse;
 import com.example.storyteller.entity.Article;
 import com.example.storyteller.entity.User;
 import com.example.storyteller.repository.UserRepository;
@@ -9,13 +10,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+
+    public Boolean checkUsernameExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public Boolean checkEmailExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
     public List<Article> getArticlesByEmail(String email) {
         User user = userRepository.findByEmail(email)

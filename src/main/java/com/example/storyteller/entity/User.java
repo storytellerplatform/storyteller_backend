@@ -1,5 +1,6 @@
 package com.example.storyteller.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,8 +32,21 @@ public class User implements UserDetails {
             generator = "user_sequence"
     )
     private Long userId;
+
+    @Column(
+            name = "username",
+            unique = true
+    )
     private String username;
+
+    @Column(
+            name = "email",
+            unique = true
+    )
     private String email;
+
+    @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)

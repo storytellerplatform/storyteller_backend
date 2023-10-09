@@ -22,7 +22,9 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-        return ResponseEntity.ok(authenticationService.register(request));
+        AuthenticationResponse response = authenticationService.register(request);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/authenticate")
