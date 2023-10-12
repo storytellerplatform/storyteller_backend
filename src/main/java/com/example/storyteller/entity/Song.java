@@ -26,5 +26,5 @@ public class Song {
             strategy = GenerationType.SEQUENCE,
             generator = "song_sequence"
     )
-    private Long songId;
+    private Integer songId;
 }

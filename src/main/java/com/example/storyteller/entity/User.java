@@ -31,7 +31,7 @@ public class User implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-    private Long userId;
+    private Integer userId;
 
     @Column(
             name = "username",
@@ -60,6 +60,7 @@ public class User implements UserDetails {
             name = "user_id",
             referencedColumnName = "userId"
     )
+    @JsonIgnore
     private List<Article> articles;
 
     @Override

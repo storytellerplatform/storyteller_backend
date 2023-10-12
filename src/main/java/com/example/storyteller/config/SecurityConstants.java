@@ -7,4 +7,5 @@ public class SecurityConstants {
             "/api/v1/user/checkUsername",
             "/api/v1/user/checkEmail"
     };
+
 }

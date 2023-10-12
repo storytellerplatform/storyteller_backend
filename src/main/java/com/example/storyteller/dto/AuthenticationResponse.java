@@ -1,5 +1,6 @@
 package com.example.storyteller.dto;
 
+import com.example.storyteller.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +14,9 @@ import org.springframework.util.MultiValueMap;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationResponse {
+    private Integer userId;
+    private Integer expiresIn;
+    private String username;
     private String token;
+    private Role role;
 }
