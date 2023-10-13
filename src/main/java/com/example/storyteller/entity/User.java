@@ -34,10 +34,10 @@ public class User implements UserDetails {
     private Integer userId;
 
     @Column(
-            name = "username",
+            name = "name",
             unique = true
     )
-    private String username;
+    private String name;
 
     @Column(
             name = "email",

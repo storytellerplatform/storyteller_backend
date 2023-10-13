@@ -49,13 +49,13 @@ public class UserController {
         return ResponseEntity.ok().body(userService.checkEmailExists(email));
     }
 
-    @RequestMapping(path = "/article")
-    public ResponseEntity<List<Article>> getArticleByEmail(@RequestBody String email) {
-        return ResponseEntity.ok(userService.getArticlesByEmail(email));
+    @RequestMapping(path = "/article/{userId}")
+    public ResponseEntity<List<Article>> getArticleById(@PathVariable Integer userId) {
+        return ResponseEntity.ok(userService.getArticlesById(userId));
     }
 
     @PostMapping(path = "/article")
-    public ResponseEntity<List<Article>> addNewArticle(@RequestBody @NotNull AddNewArticleRequest request) {
+    public ResponseEntity<Article> addNewArticle(@RequestBody @NotNull AddNewArticleRequest request) {
         return ResponseEntity.ok(userService.addNewArticle(request.getContent(), request.getUserId(), request.getEmotionList()));
     }
 

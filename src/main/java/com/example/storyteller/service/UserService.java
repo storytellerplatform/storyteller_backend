@@ -23,20 +23,20 @@ public class UserService {
 
 
     public Boolean checkUsernameExists(String username) {
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByName(username);
     }
 
     public Boolean checkEmailExists(String email) {
         return userRepository.existsByEmail(email);
     }
 
-    public List<Article> getArticlesByEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found"));
+    public List<Article> getArticlesById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + userId + " not found"));
         return user.getArticles();
     }
 
-    public List<Article> addNewArticle(String content, Integer userId, List<String> emotionList) {
+    public Article addNewArticle(String content, Integer userId, List<String> emotionList) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User with email " + userId + " not found"));
 
@@ -57,11 +57,12 @@ public class UserService {
         if (articleList == null) {
             articleList = new ArrayList<>();
         }
+
         articleList.add(newArticle);
         user.setArticles(articleList);
 
         userRepository.save(user);
-        return articleList;
+        return newArticle;
     }
 
     public void deleteArticle(Integer articleId, Integer userId) {

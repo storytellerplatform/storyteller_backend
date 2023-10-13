@@ -38,7 +38,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByName(request.getUsername())) {
             throw new CustomException("ACCOUNT_EXISTS", "帳號已存在");
         }
 
@@ -51,7 +51,7 @@ public class AuthenticationService {
         }
 
         var user = User.builder()
-                .username(request.getUsername())
+                .name(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
