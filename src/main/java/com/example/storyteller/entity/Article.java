@@ -1,16 +1,15 @@
 package com.example.storyteller.entity;
 
-import com.example.storyteller.exception.CustomException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Article")
 @Data
@@ -18,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Table(name = "article")
+@EntityListeners(AuditingEntityListener.class)
 public class Article {
 
     @Id
@@ -43,6 +43,10 @@ public class Article {
             insertable = false
     )
     private String purpose;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
 
     @OneToMany(
             cascade = CascadeType.ALL,

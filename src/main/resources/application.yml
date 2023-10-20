@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/storyteller
+    url: jdbc:postgresql://db:5432/storyteller
     driver-class-name: org.postgresql.Driver
     username: onandon
     password: asd112233

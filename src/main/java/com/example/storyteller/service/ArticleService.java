@@ -16,6 +16,11 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    public Article getArticleById(Integer articleId) {
+        return articleRepository.findById(articleId)
+                .orElseThrow(() -> new CustomException("ARTICLE_NOT_FOUND", "文章不存在"));
+    }
+
     public Article updateArticle(Integer articleId, Article article) {
         articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException("ARTICLE_NOT_FOUND", "文章不存在"));
@@ -53,4 +58,5 @@ public class ArticleService {
 
         return articleRepository.save(article);
     }
+
 }

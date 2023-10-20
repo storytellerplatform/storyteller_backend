@@ -14,6 +14,11 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
+    @GetMapping(path = "/{articleId}")
+    public ResponseEntity<Article> getArticleById(@PathVariable Integer articleId) {
+        return ResponseEntity.ok(articleService.getArticleById(articleId));
+    }
+
     @PutMapping(path = "/{articleId}")
     public ResponseEntity<Article> updateArticle(@PathVariable Integer articleId, @RequestBody Article updatedArticle) {
         return ResponseEntity.ok(articleService.updateArticle(articleId, updatedArticle));
