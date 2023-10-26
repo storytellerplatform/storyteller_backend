@@ -13,8 +13,8 @@ import java.util.Set;
 
 @Entity(name = "Attribute")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Table(name = "attribute")
 public class Emotion {

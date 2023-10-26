@@ -45,7 +45,7 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
-    public Article createNewEmotions(Integer articleId, Emotion emotion) {
+    public Article createNewEmotions(Integer articleId, List<String> emotion) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException("ARTICLE_NOT_FOUND", "文章不存在"));
 
@@ -53,7 +53,13 @@ public class ArticleService {
         if (emotionList == null) {
             emotionList = new ArrayList<>();
         }
-        emotionList.add(emotion);
+
+        Emotion newEmotion = Emotion
+                .builder()
+                .emotions(emotion)
+                .build();
+
+        emotionList.add(newEmotion);
         article.setEmotions(emotionList);
 
         return articleRepository.save(article);

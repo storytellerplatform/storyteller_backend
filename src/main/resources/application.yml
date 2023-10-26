@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://db:5432/storyteller
+    url: jdbc:postgresql://localhost:5432/storyteller?charSet=utf8
     driver-class-name: org.postgresql.Driver
     username: onandon
     password: asd112233
+
   jpa:
     hibernate:
       ddl-auto: 'create-drop'
@@ -11,6 +12,25 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-logging:
-  level:
-    sql: trace
+  mail:
+    host: localhost
+    port: 1025
+    username: hello@onandon.com
+    password: hello
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always

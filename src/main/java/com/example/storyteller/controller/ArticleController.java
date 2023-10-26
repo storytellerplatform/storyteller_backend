@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/article")
 @RequiredArgsConstructor
@@ -32,8 +34,8 @@ public class ArticleController {
     @PostMapping(path = "/emotion/{articleId}")
     public ResponseEntity<Article> createNewEmotions (
             @PathVariable Integer articleId,
-            @RequestBody Emotion emotion
+            @RequestBody List<String> emotionList
     ) {
-        return ResponseEntity.ok(articleService.createNewEmotions(articleId, emotion));
+        return ResponseEntity.ok(articleService.createNewEmotions(articleId, emotionList));
     }
 }

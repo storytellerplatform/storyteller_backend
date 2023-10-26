@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Todo: 將音檔輸入到資料庫
-
 @Entity(name = "Song")
 @Data
 @AllArgsConstructor
