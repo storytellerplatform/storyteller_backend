@@ -34,6 +34,7 @@ public class Article {
 
     @Column(
             name = "content",
+            nullable = false,
             columnDefinition = "TEXT"
     )
     private String content;
@@ -43,6 +44,12 @@ public class Article {
             insertable = false
     )
     private String purpose;
+
+    @Column(
+            name = "name",
+            nullable = false
+    )
+    private String name;
 
     @CreatedDate
     @Column(name = "created_date")
