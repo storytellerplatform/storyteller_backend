@@ -32,7 +32,7 @@ public class EmailService implements EmailValidator.EmailSender {
             helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject("認證您的電子信箱");
-            helper.setFrom("hello@onandon.com"); // 0.0
+            helper.setFrom("aazz26262626@gmail.com"); // 0.0
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             LOGGER.error("failed to send email", e);

@@ -1,7 +1,5 @@
 package com.example.storyteller.dto;
 
-import com.example.storyteller.entity.Article;
-import com.example.storyteller.entity.Emotion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AddNewArticleRequest {
     private Integer userId;
+    private String name;
     private String content;
-    private List<String> emotionList;
+    private List<Integer> emotions;
 }

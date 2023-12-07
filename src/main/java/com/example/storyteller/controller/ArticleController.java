@@ -1,7 +1,6 @@
 package com.example.storyteller.controller;
 
 import com.example.storyteller.entity.Article;
-import com.example.storyteller.entity.Emotion;
 import com.example.storyteller.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +33,8 @@ public class ArticleController {
     @PostMapping(path = "/emotion/{articleId}")
     public ResponseEntity<Article> createNewEmotions (
             @PathVariable Integer articleId,
-            @RequestBody List<String> emotionList
+            @RequestBody List<Integer> emotions
     ) {
-        return ResponseEntity.ok(articleService.createNewEmotions(articleId, emotionList));
+        return ResponseEntity.ok(articleService.createNewEmotions(articleId, emotions));
     }
 }

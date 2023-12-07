@@ -1,14 +1,11 @@
 package com.example.storyteller.service;
 
 import com.example.storyteller.entity.Article;
-import com.example.storyteller.entity.Emotion;
 import com.example.storyteller.entity.User;
 import com.example.storyteller.exception.CustomException;
 import com.example.storyteller.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,21 +32,19 @@ public class UserService implements UserDetailsService {
 
     public List<Article> getArticlesById(Integer userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with email " + userId + " not found"));
+                .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, userId)));
+
         return user.getArticles();
     }
 
-    public Article addNewArticle(String content, Integer userId, List<String> emotionList) {
+    public Article addNewArticle(String name, String content, Integer userId, List<Integer> emotions) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with email " + userId + " not found"));
-
-        Emotion emotion = Emotion.builder()
-                .emotions(emotionList)
-                .build();
+                .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, userId)));
 
         Article newArticle = Article.builder()
+                .name(name)
                 .content(content)
-                .emotions(Collections.singletonList(emotion))
+                .emotions(emotions)
                 .build();
 
         user.getArticles().add(newArticle);
@@ -76,13 +71,32 @@ public class UserService implements UserDetailsService {
 
     public User getUserData(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
+                .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, email)));
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, email)));
+    }
+
+    public User partiallyUpdateUser (Integer userId, User updatedUser) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("USER_NOT_FOUND", "使用者不存在"));
+
+        if (updatedUser.getName() != null) {
+            user.setName(updatedUser.getName());
+        }
+
+        if (updatedUser.getPassword() != null) {
+            user.setPassword(updatedUser.getPassword());
+        }
+
+        if (updatedUser.getArticles() != null) {
+            user.setArticles(updatedUser.getArticles());
+        }
+
+        return userRepository.save(user);
     }
 
     public Integer enableUser(String email) {
@@ -96,6 +110,13 @@ public class UserService implements UserDetailsService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public User findByGoogleId(String googleId) {
+        Optional<User> user = userRepository.findByGoogleId(googleId);
+        return user.orElse(null);
+    }
+
+    public boolean existsByGoogleId(String googleId) { return userRepository.existsByGoogleId(googleId); }
 
     public void save(User user) {
         userRepository.save(user);

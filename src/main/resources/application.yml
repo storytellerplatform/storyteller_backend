@@ -5,6 +5,15 @@ spring:
     username: onandon
     password: asd112233
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 415787998671-j5apnpv0thbo83psubi621p1gp1ngb0s.apps.googleusercontent.com
+            clientSecret: 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
+            scope: profile, email
+
   jpa:
     hibernate:
       ddl-auto: 'create-drop'
@@ -12,23 +21,31 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-  mail:
-    host: localhost
-    port: 1025
-    username: hello@onandon.com
-    password: hello
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
 
-    properties:
-      mail:
-        smtp:
-          ssl:
-            trust: "*"
-          auth: true
-          starttls:
-            enable: true
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 047633597q@gmail.com
+    password: auqxzwziogfinbct
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+#    properties:
+#      mail:
+#        smtp:
+#          ssl:
+#            trust: "*"
+#          auth: true
+#          starttls:
+#            enable: true
+#          connectiontimeout: 5000
+#          timeout: 3000
+#          writetimeout: 5000
 
 server:
   error:

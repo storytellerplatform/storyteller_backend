@@ -8,7 +8,10 @@ import com.example.storyteller.entity.Role;
 import com.example.storyteller.entity.User;
 import com.example.storyteller.exception.CustomException;
 import com.example.storyteller.utils.EmailValidator;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,7 +47,8 @@ public class AuthenticationService {
         return hasEnglish && hasDigits && hasValidLength;
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    @Transactional
+    public AuthenticationResponse register(@NotNull RegisterRequest request) {
 
         if (userService.existsByName(request.getName())) {
             throw new CustomException("ACCOUNT_EXISTS", String.format(USER_EXISTS_MSG, request.getName()));
@@ -102,16 +106,16 @@ public class AuthenticationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+                        new CustomException("TOKEN_NOT_FOUND", "未找到token"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            throw new CustomException("EMAIL_IS_CONFIRMED", "信箱已註冊過");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            throw new CustomException("TOKEN_EXPIRED", "token已過期");
         }
 
         confirmationTokenService.setConfirmedAt(token);
@@ -119,19 +123,23 @@ public class AuthenticationService {
         userService.enableUser(
                 confirmationToken.getUser().getEmail());
 
-        return "confirmed";
+        return "電子郵件認證成功";
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(@NotNull AuthenticationRequest request) {
+        User user = userService.findByEmail(request.getEmail())
+                .orElseThrow(() -> new CustomException("EMAIL_NOT_FOUND", "信箱未找到"));
+
+        if (!user.isEnabled()) {
+            throw new CustomException("EMAIL_INVALID", "您的帳戶需要進行電子郵件驗證。請檢查您的郵件信箱!");
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-
-        User user = userService.findByEmail(request.getEmail())
-                .orElseThrow();
 
         String jwtToken = jwtService.generateToken(user);
 
@@ -143,7 +151,8 @@ public class AuthenticationService {
                 .build();
     }
 
-    private String buildEmail(String name, String link) {
+    @Contract(pure = true)
+    private @NotNull String buildEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -199,7 +208,7 @@ public class AuthenticationService {
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
                 "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Thank you for registering. Please click on the below link to activate your account: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Activate Now</a> </p></blockquote>\n Link will expire in 15 minutes. <p>See you soon</p>" +
+                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">您好 " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> \n 感謝您在「說書人」網站註冊帳戶。為了啟用您的帳戶，請點擊下方連結： </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">立即啟用</a> </p></blockquote>\n 連結將在 15 分鐘後過期。 <p>期待與您再會</p>\n <p> 說書人團隊 </p> \n <p> (請勿回覆此郵件，如有任何疑問，請聯繫我們的客服人員。) </p>" +
                 "        \n" +
                 "      </td>\n" +
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +

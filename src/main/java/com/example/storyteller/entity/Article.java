@@ -40,14 +40,12 @@ public class Article {
     private String content;
 
     @Column(
-            name = "purpose",
-            insertable = false
+            name = "purpose"
     )
     private String purpose;
 
     @Column(
-            name = "name",
-            nullable = false
+            name = "name"
     )
     private String name;
 
@@ -55,14 +53,9 @@ public class Article {
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(
-            name = "article_id",
-            referencedColumnName = "articleId"
-    )
-    private List<Emotion> emotions;
 
+    @Column(
+            name = "emotions"
+    )
+    private List<Integer> emotions;
 }

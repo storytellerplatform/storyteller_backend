@@ -12,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -32,6 +34,11 @@ public class UserController {
         }
 
         throw new CustomException("USER_NOT_FOUND", "使用者不存在");
+    }
+
+    @GetMapping("/info")
+    public Map<String, Object> user(@NotNull OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return oAuth2AuthenticationToken.getPrincipal().getAttributes();
     }
 
     @GetMapping(path = "/{userId}")
@@ -56,7 +63,7 @@ public class UserController {
 
     @PostMapping(path = "/article")
     public ResponseEntity<Article> addNewArticle(@RequestBody @NotNull AddNewArticleRequest request) {
-        return ResponseEntity.ok(userService.addNewArticle(request.getContent(), request.getUserId(), request.getEmotionList()));
+        return ResponseEntity.ok(userService.addNewArticle(request.getName(), request.getContent(), request.getUserId(), request.getEmotions()));
     }
 
     @DeleteMapping(path = "/article")

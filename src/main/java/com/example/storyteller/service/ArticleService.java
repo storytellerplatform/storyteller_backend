@@ -1,13 +1,11 @@
 package com.example.storyteller.service;
 
 import com.example.storyteller.entity.Article;
-import com.example.storyteller.entity.Emotion;
 import com.example.storyteller.exception.CustomException;
 import com.example.storyteller.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,22 +43,11 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
-    public Article createNewEmotions(Integer articleId, List<String> emotion) {
+    public Article createNewEmotions(Integer articleId, List<Integer> emotions) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException("ARTICLE_NOT_FOUND", "文章不存在"));
 
-        List<Emotion> emotionList = article.getEmotions();
-        if (emotionList == null) {
-            emotionList = new ArrayList<>();
-        }
-
-        Emotion newEmotion = Emotion
-                .builder()
-                .emotions(emotion)
-                .build();
-
-        emotionList.add(newEmotion);
-        article.setEmotions(emotionList);
+        article.setEmotions(emotions);
 
         return articleRepository.save(article);
     }

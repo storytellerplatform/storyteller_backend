@@ -32,8 +32,13 @@ public class User implements UserDetails {
     private Integer userId;
 
     @Column(
-            name = "name",
+            name = "google_id",
             unique = true
+    )
+    private String googleId;
+
+    @Column(
+            name = "name"
     )
     private String name;
 
