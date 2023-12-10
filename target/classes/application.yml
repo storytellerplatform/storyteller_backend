@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/storyteller?charSet=utf8
+    driver-class-name: org.postgresql.Driver
+    username: onandon
+    password: asd112233
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 415787998671-j5apnpv0thbo83psubi621p1gp1ngb0s.apps.googleusercontent.com
+            clientSecret: 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
+            scope: profile, email
+
+  jpa:
+    hibernate:
+      ddl-auto: 'create-drop'
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 047633597q@gmail.com
+    password: auqxzwziogfinbct
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+#    properties:
+#      mail:
+#        smtp:
+#          ssl:
+#            trust: "*"
+#          auth: true
+#          starttls:
+#            enable: true
+#          connectiontimeout: 5000
+#          timeout: 3000
+#          writetimeout: 5000
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
