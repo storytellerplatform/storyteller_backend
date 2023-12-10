@@ -57,13 +57,12 @@ public class User implements UserDetails {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "userId"
     )
-    @JsonIgnore
     private List<Article> articles;
 
     private boolean isLocked;

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class AuthenticationService {
 
         boolean hasEnglish = englishPattern.matcher(password).find();
         boolean hasDigits = digitPattern.matcher(password).find();
-        boolean hasValidLength = password.length() > 6;
+        boolean hasValidLength = password.length() >= 6;
 
         return hasEnglish && hasDigits && hasValidLength;
     }
@@ -83,12 +84,12 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
 
         ConfirmationToken confirmationToken = ConfirmationToken
-                .builder()
-                .token(jwtToken)
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(15))
-                .user(user)
-                .build();
+            .builder()
+            .token(jwtToken)
+            .createdAt(LocalDateTime.now())
+            .expiresAt(LocalDateTime.now().plusMinutes(15))
+            .user(user)
+            .build();
 
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
@@ -105,17 +106,24 @@ public class AuthenticationService {
     public String confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
-                .orElseThrow(() ->
-                        new CustomException("TOKEN_NOT_FOUND", "未找到token"));
+                .orElse(null);
+//                .orElseThrow(() ->
+//                        new CustomException("TOKEN_NOT_FOUND", "未找到token"));
+
+        if (confirmationToken == null) {
+            return "未找到token";
+        }
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new CustomException("EMAIL_IS_CONFIRMED", "信箱已註冊過");
+//            throw new CustomException("EMAIL_IS_CONFIRMED", "信箱已註冊過");
+            return "該信箱已註冊過";
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new CustomException("TOKEN_EXPIRED", "token已過期");
+//            throw new CustomException("TOKEN_EXPIRED", "");
+            return "token已過期";
         }
 
         confirmationTokenService.setConfirmedAt(token);
@@ -134,12 +142,16 @@ public class AuthenticationService {
             throw new CustomException("EMAIL_INVALID", "您的帳戶需要進行電子郵件驗證。請檢查您的郵件信箱!");
         }
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (AuthenticationException e) {
+            throw new CustomException("INVALID_CREDENTIALS", "無效的認證資訊");
+        }
 
         String jwtToken = jwtService.generateToken(user);
 

@@ -5,7 +5,6 @@ public class SecurityConstants {
             "/webjars/**",
             "/api/v1/auth/**",
             "/api/v1/test/**",
-            "/api/v1/audio/**",
             "/api/v1/user/checkUsername",
             "/api/v1/user/checkEmail"
     };

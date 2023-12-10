@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,16 @@ public class UserService implements UserDetailsService {
         return user.getArticles();
     }
 
+
+    public List<Article> getArticlesSortedByDate(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, userId)));
+
+        List<Article> articleList = user.getArticles();
+
+        return articleList;
+    }
+
     public Article addNewArticle(String name, String content, Integer userId, List<Integer> emotions) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, userId)));
@@ -53,7 +65,6 @@ public class UserService implements UserDetailsService {
         return user.getArticles().get(user.getArticles().size() - 1);
     }
 
-
     public void deleteArticle(Integer articleId, Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, userId)));
@@ -64,6 +75,7 @@ public class UserService implements UserDetailsService {
         user.setArticles(articleList);
     }
 
+    @Transactional
     public User getUserData(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("USER_NOT_FOUND", String.format(USER_NOT_FOUND_MSG, userId)));
@@ -111,6 +123,7 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByEmail(email);
     }
 
+    @Transactional
     public User findByGoogleId(String googleId) {
         Optional<User> user = userRepository.findByGoogleId(googleId);
         return user.orElse(null);
@@ -126,5 +139,6 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
 
 }

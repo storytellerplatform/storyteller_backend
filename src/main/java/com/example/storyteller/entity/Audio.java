@@ -1,12 +1,15 @@
 package com.example.storyteller.entity;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +17,7 @@ import org.hibernate.annotations.Type;
 @Builder
 @Entity(name = "Audio")
 @Table(name = "audio")
+@EntityListeners(AuditingEntityListener.class)
 public class Audio {
 
     @Id
@@ -29,11 +33,15 @@ public class Audio {
     private Integer audioId;
 
     @Lob
+    @JsonIgnore
     @Basic(fetch = FetchType.LAZY)
     @Column(
             name = "audio_data",
-//            columnDefinition = "BYTEA",
             nullable = false
     )
     private byte[] audioData;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
 }

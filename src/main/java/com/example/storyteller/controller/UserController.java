@@ -8,6 +8,7 @@ import com.example.storyteller.exception.CustomException;
 import com.example.storyteller.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserEmail = authentication.getName();
-            return ResponseEntity.ok().body(userService.getUserData(currentUserEmail));
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getUserData(currentUserEmail));
         }
 
         throw new CustomException("USER_NOT_FOUND", "使用者不存在");
@@ -56,9 +57,14 @@ public class UserController {
         return ResponseEntity.ok().body(userService.checkEmailExists(email));
     }
 
-    @RequestMapping(path = "/article/{userId}")
+    @GetMapping(path = "/article/{userId}")
     public ResponseEntity<List<Article>> getArticleById(@PathVariable Integer userId) {
-        return ResponseEntity.ok(userService.getArticlesById(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getArticlesById(userId));
+    }
+
+    @GetMapping(path = "/sortedByDate/{userId}")
+    public ResponseEntity<List<Article>> getArticlesSortedByDate(@PathVariable Integer userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getArticlesSortedByDate(userId));
     }
 
     @PostMapping(path = "/article")
