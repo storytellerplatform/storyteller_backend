@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://storyteller_0zkh_user:wtQgVpdsQdMnH4daSEq9ukSzUhz1uVNY@dpg-clra2ahjvg7s73ee6lv0-a/storyteller_0zkh
+    url: jdbc:postgresql://storyteller_0zkh_user:wtQgVpdsQdMnH4daSEq9ukSzUhz1uVNY@dpg-clra2ahjvg7s73ee6lv0-a/storyteller_0zkh?charSet=utf8
 #    url: jdbc:postgresql://localhost:5432/storyteller?charSet=utf8
     driver-class-name: org.postgresql.Driver
     username: storyteller_0zkh_user
