@@ -34,9 +34,6 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final UserService userService;
-    private final JwtService jwtService;
-    private final ConfirmationTokenService confirmationTokenService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
