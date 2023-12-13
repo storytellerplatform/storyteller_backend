@@ -1,10 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-clra2ahjvg7s73ee6lv0-a:5432/storyteller_0zkh?user=storyteller_0zkh_user&password=wtQgVpdsQdMnH4daSEq9ukSzUhz1uVNY&charSet=utf8
+    url: jdbc:postgresql://dpg-clra2ahjvg7s73ee6lv0-a:5432/storyteller_0zkh?charSet=utf8
     #    url: jdbc:postgresql://localhost:5432/storyteller?charSet=utf8
     driver-class-name: org.postgresql.Driver
-#    username: storyteller_0zkh_user
-#    password: wtQgVpdsQdMnH4daSEq9ukSzUhz1uVNY
+    username: storyteller_0zkh_user
+    password: wtQgVpdsQdMnH4daSEq9ukSzUhz1uVNY
 #    username: onandon
 #    password: asd112233
 
