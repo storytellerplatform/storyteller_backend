@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://100.87.143.63:3000")
 @RequestMapping("/api/v1/article")
 @RequiredArgsConstructor
 public class ArticleController {

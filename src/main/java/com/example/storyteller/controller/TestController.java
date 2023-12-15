@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://100.87.143.63:3000")
 @RequiredArgsConstructor
 public class TestController {
     private final AudioService audioService;
