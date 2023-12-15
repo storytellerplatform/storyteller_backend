@@ -94,7 +94,7 @@ public class AuthenticationService {
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
 //        String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
-        String link = "https://storyteller-service.onrender.com/api/v1/auth/confirm?token=" + jwtToken;
+        String link = "http://100.87.143.63:3000/api/v1/auth/confirm?token=" + jwtToken;
 
         emailService.send(request.getEmail(), buildEmail(request.getName(), link));
 
