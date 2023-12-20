@@ -29,6 +29,8 @@ public class AuthenticationService {
     private final static String USER_EXISTS_MSG =
             "使用者 %s 已註冊過";
 
+    private final static String Email_Link = "http://localhost:8080/api/v1/auth/confirm?token=%s";
+
     private final UserService userService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -93,7 +95,7 @@ public class AuthenticationService {
 
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
+        String link = String.format(Email_Link, jwtToken);
 
         emailService.send(request.getEmail(), buildEmail(request.getName(), link));
 
