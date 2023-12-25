@@ -29,7 +29,7 @@ public class AuthenticationService {
     private final static String USER_EXISTS_MSG =
             "使用者 %s 已註冊過";
 
-    private final static String Email_Link = "http://localhost:8080/api/v1/auth/confirm?token=%s";
+    private final static String Email_Link = "http://aazz282828-alps:8080/api/v1/auth/confirm?token=%s";
 
     private final UserService userService;
     private final JwtService jwtService;
